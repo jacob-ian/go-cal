@@ -1,0 +1,47 @@
+{{ define "body" }}
+<div class="w-full">
+  <div class="w-full flex flex-row items-center py-5 sticky top-0 bg-white">
+    <div class="flex-1">
+      <button
+        class="flex flex-row justify-center items-center rounded-md px-4 h-12 bg-slate-200 font-semibold"
+        hx-get="/?month={{.MonthInt}}&year={{.Year}}"
+        hx-push-url="true"
+        hx-target="#container"
+        hx-swap="innerHTML"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          class="fill-black"
+        >
+          <path
+            d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"
+          />
+        </svg>
+      </button>
+    </div>
+    <div class="flex-1 flex flex-row justify-center">
+      <h1 class="font-bold text-xl">
+        {{.Weekday}} {{.Day}} {{ printf "%.*s" 3 .Month}}, {{.Year}}
+      </h1>
+    </div>
+    <div class="flex-1"></div>
+  </div>
+  <div class="w-full">
+    {{ range .Hours }}
+    <div class="flex flex-row gap-2 items-center">
+      <div class="relative w-20 h-full">
+        <div class="absolute top-[-10px] text-sm text-neutral-600">
+          {{ .Label }}
+        </div>
+      </div>
+      <div
+        class="flex-1 py-8 px-5 border border-neutral-200 border-b-0 last:border-b hover:bg-slate-200"
+      ></div>
+    </div>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

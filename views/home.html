@@ -1,0 +1,78 @@
+{{ define "body" }}
+<div id="calendar" class="flex flex-col w-full">
+  <div class="w-full flex flex-row justify-center items-center mb-5">
+    <div class="flex-1"></div>
+    <div class="flex-1 flex flex-row items-center justify-center gap-2">
+      <button
+        class="flex flex-row justify-center items-center rounded-md px-4 h-12 bg-slate-200 font-semibold outline-transparent"
+        hx-get="/?month={{.Previous.Month}}&year={{.Previous.Year}}"
+        hx-push-url="true"
+        hx-target="#calendar"
+        hx-swap="outerHTML"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          class="fill-black"
+        >
+          <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
+        </svg>
+      </button>
+      <h2
+        class="flex flex-row items-center justify-center font-semibold text-2xl w-64 h-12 bg-slate-200 rounded-md"
+      >
+        {{ .Month }} {{ .Year }}
+      </h2>
+      <button
+        class="flex flex-row justify-center items-center rounded-md px-4 h-12 bg-slate-200 font-semibold outline-transparent"
+        hx-get="/?month={{.Next.Month}}&year={{.Next.Year}}"
+        hx-push-url="true"
+        hx-target="#calendar"
+        hx-swap="outerHTML"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          class="fill-black"
+        >
+          <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+        </svg>
+      </button>
+    </div>
+    <div class="flex-1 flex flex-row justify-end items-center">
+      <button
+        class="flex flex-row justify-center items-center rounded-md px-4 h-12 bg-slate-200 font-semibold"
+        hx-get="/"
+        hx-push-url="true"
+        hx-target="#calendar"
+        hx-swap="outerHTML"
+      >
+        Today
+      </button>
+    </div>
+  </div>
+  <div class="grid grid-cols-7">
+    {{ range .Weekdays }}
+    <div
+      class="flex flex-row items-end justify-center uppercase font-semibold text-sm mb-2"
+    >
+      {{ printf "%.*s" 3 . }}
+    </div>
+    {{ end }} {{ range .Days }}
+    <div
+      class="h-52 min-w-44 flex flex-col items-center justify-start py-2 px-5 border {{if .IsOutOfMonth}}bg-slate-100{{end}} {{ if .IsToday }}bg-sky-100{{ end }} hover:bg-slate-300 cursor-pointer"
+      hx-get="/days/{{ .Unix }}"
+      hx-push-url="true"
+      hx-target="#container"
+      hx-swap="innerHTML"
+    >
+      <div class="font-bold">{{ .Day }}</div>
+    </div>
+    {{end}}
+  </div>
+</div>
+{{ end }}
